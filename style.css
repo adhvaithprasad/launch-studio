@@ -222,10 +222,19 @@ input, button {
   font-family:'Circular Std';
   font-weight:400;
 }
-#output{
-  height:calc(100% - 58px);
-  width:100%;
-  background:white;
+#output {
+    height: calc(100% - 74px);
+    /* width: 100%; */
+    padding: 10px;
+    background: #464545;
+    border-radius: 0px 0px 10px 10px;
+}
+.output {
+    color: white;
+    background: #272727;
+    padding: 10px;
+    border-radius: 5px;
+  margin-top:6px;
 }
 .languages{
   position: absolute;
