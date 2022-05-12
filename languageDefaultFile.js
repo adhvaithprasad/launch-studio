@@ -54,7 +54,6 @@ var files_name = {
   "1008": "script.py",
   "1009": "main.nim",
   "1010": "script.py",
-  "1011": "main.bsq",
   "1012": "main.cpp",
   "1013": "main.c",
   "1014": "main.cpp",

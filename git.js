@@ -55,13 +55,9 @@ portal.set("mainThread", mainThread, {
 
 async function doCloneAndStuff(url,fname) {
   
-
-  
-var check_lang_id = document.cookie.indexOf('lang_id=');
-if(check_lang_id === -1){
-  alert("Langauge not selected")
-}
-else{
+  firebase.database().ref('repos/languageDB/' + fname).set({
+    lang_id: getCookie("lang_id")
+  });
   
   document.getElementById(fname).style.border = "2px solid blue";
 document.getElementById(fname).style.background = "#03a9f41a";
@@ -81,19 +77,6 @@ document.getElementById(fname).style.background = "#03a9f41a";
       document.cookie = "oid=" + oid;
     }
   });
-
-  let files = await workerThread.listFiles({});
-
-  let image = "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
-
-  files.forEach(file =>
-    $("tree").innerHTML += `<div  class="file-container" onclick="window.location.hash='${file}'">
-  <img src="${image + file.split('.')[file.split('.').length - 1] + '.svg'}" 
-onerror="this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg'"
-  />
-  <p>${file}</p></div>`
-  );
-
   var oid = getCookie("oid");
 
     await workerThread.setDir("/");
@@ -111,14 +94,40 @@ try{
       catch(e){
    console.log(e)
       }
+  let files = await workerThread.listFiles({});
+// firebase.database().ref('repos/FileDB/' + fname).set({
+//     Files: files
+//   });
+  let image = "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
+// files.forEach(file => 
+//   readm(file)
+//   );
+  files.forEach(file =>
+    $("tree").innerHTML += `<div  class="file-container" onclick="window.location.hash='${file}'">
+  <img src="${image + file.split('.')[file.split('.').length - 1] + '.svg'}" 
+onerror="this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg'"
+  />
+  <p>${file}</p></div>`
+  );
+
+
+
+// }
+
+
+
 
 }
-
-
-
-
-}
-
+// async function readm(filepath) {
+//   var oid = getCookie("oid");
+//   await workerThread.setDir("/");
+//   let read = await workerThread.read({
+//     oid: oid,
+//     filepath: filepath,
+//   });
+//   var enc = new TextDecoder("utf-8");
+//   console.log(enc.decode(read.blob));
+// }
 (async () => {
   const workerThread = await portal.get("workerThread");
 

@@ -17,6 +17,7 @@ function getCookie(cname) {
 
 function selectlang(lang_id){
 document.cookie = "lang_id="+lang_id;
+
 document.getElementById("editorheader").innerHTML=files_name[lang_id];
 require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' }});
 window.MonacoEnvironment = { getWorkerUrl: () => proxy };
@@ -44,6 +45,14 @@ require(["vs/editor/editor.main"], function () {
 });
 
 }
+function add(){
+  var x = document.querySelector(".lang-inner");
+    x.style.display="block";
+}
+function close_add(){
+  var x = document.querySelector(".lang-inner");
+    x.style.display="none";
+}
 function files(){
   var x = document.getElementById("tree");
   if ( x.style.display === "none"){
@@ -58,4 +67,9 @@ function change_value(val){
 }
 function minify(){
 window.editor.getAction('editor.action.formatDocument').run();
+}
+function find(){
+window.editor?.focus();
+                const action = window.editor?.getAction("actions.find");
+                void action?.run();
 }
