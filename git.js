@@ -1,7 +1,32 @@
 document.cookie = "lang_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie = "current_file=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie = "files=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie = "fname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie = "oid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+//Create a function that returns a string, of a given length
+const genRand = (len) => {
+  return Math.random().toString(36).substring(2,len+2);
+}
 window.addEventListener('hashchange', function() {
   var hash = window.location.hash.replace(/#/g, '');
+  var m = genRand(8);
+  firebase.database().ref('file-detect/' + m).set({
+    file: hash
+  });
   read(hash)
+  setTimeout(function(){
+ 	   
+firebase.database().ref().child("file-detect").child(m).get().then((snapshot) => {
+  if (snapshot.exists()) {
+    change_lang(snapshot.val().lang)
+  
+  } else {
+    console.log("No data available");
+  }
+}).catch((error) => {
+  console.error(error);
+});
+   }, 2000);
 }, false);
 
 
@@ -53,14 +78,16 @@ portal.set("mainThread", mainThread, {
 
 
 
-async function doCloneAndStuff(url,fname) {
-  
+async function doCloneAndStuff(url,fname,user,name) {
+  document.cookie = "fname="+fname;
+  $("url").innerHTML=user;
+  $("name").innerHTML=name;
   firebase.database().ref('repos/languageDB/' + fname).set({
     lang_id: getCookie("lang_id")
   });
   
-  document.getElementById(fname).style.border = "2px solid blue";
-document.getElementById(fname).style.background = "#03a9f41a";
+//   document.getElementById(fname).style.border = "2px solid blue";
+// document.getElementById(fname).style.background = "#03a9f41a";
   document.querySelector(".languages").style.display="none";
    document.getElementsByClassName("snippet")[0].style.display = "flex";
     await workerThread.setDir("/");
@@ -77,57 +104,63 @@ document.getElementById(fname).style.background = "#03a9f41a";
       document.cookie = "oid=" + oid;
     }
   });
+  commits.forEach(function(commit) {
+     $("commithash").innerHTML +=  `<div   class="commit-container">
+<p class="commit-message">${commit.commit.message}</p>
+<p class="commit-author">${commit.commit.author.name}</p>
+<p class="commit-id">${commit.oid.slice(0,8)}</p>
+</div>`
+    
+  });
   var oid = getCookie("oid");
 
-    await workerThread.setDir("/");
-try{
-      let read = await workerThread.read({
-      oid:oid,
-      filepath:"README.md",
-    });
-  var enc = new TextDecoder("utf-8");
-
     
-  document.getElementById('output').innerHTML =
-      marked.parse(enc.decode(read.blob));
-}
-      catch(e){
-   console.log(e)
-      }
   let files = await workerThread.listFiles({});
-// firebase.database().ref('repos/FileDB/' + fname).set({
-//     Files: files
-//   });
+
+  document.cookie = "files=" + JSON.stringify(files);
   let image = "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
-// files.forEach(file => 
-//   readm(file)
-//   );
-  files.forEach(file =>
-    $("tree").innerHTML += `<div  class="file-container" onclick="window.location.hash='${file}'">
-  <img src="${image + file.split('.')[file.split('.').length - 1] + '.svg'}" 
-onerror="this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg'"
-  />
-  <p>${file}</p></div>`
-  );
 
 
 
-// }
 
+  function addfile(file){
+  if(document.getElementById(file.split("/")[0])){
+  
+  
+  }
+  else{
+    if (file.split("/").length > 1){
+    $("tree").innerHTML +=  `<div  id="${file.split("/")[0]}" class="file-container" onclick="window.location.hash='${file.split("/")[0]}'">
+<img src="https://codesandbox.io/static/media/folderOpen.6913563c.svg" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`
+  }
+  else{
+    $("tree").innerHTML +=  `<div data-tippy="${file}" id="${file.split("/")[0]}" class="file-container" onclick="window.location.hash='${file.split("/")[0]}'">
+<img src="${image + file.split('.')[file.split('.').length -1]+'.svg'}" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`
+  }
+  }}
+  
+files.forEach(file => 
+ addfile(file)
+);
+
+
+files.forEach(file => 
+ document.cookie = "file_"+file+"="+read_cookie(file)
+);
 
 
 
 }
-// async function readm(filepath) {
-//   var oid = getCookie("oid");
-//   await workerThread.setDir("/");
-//   let read = await workerThread.read({
-//     oid: oid,
-//     filepath: filepath,
-//   });
-//   var enc = new TextDecoder("utf-8");
-//   console.log(enc.decode(read.blob));
-// }
+
+async function readk(file){
+   var oid = getCookie("oid");
+  await workerThread.setDir("/");
+ let read = await workerThread.read({oid: oid,filepath: file});
+  return read ;
+}
+
 (async () => {
   const workerThread = await portal.get("workerThread");
 
@@ -137,8 +170,7 @@ onerror="this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@
 
   window.workerThread = workerThread;
   window.worker = worker;
-  // console.log(workerThread);
-  // doCloneAndStuff();
+
 
 })();
 
@@ -152,9 +184,24 @@ async function read(filepath) {
   });
   var enc = new TextDecoder("utf-8");
 
-  console.log(enc.decode(read.blob));
+  
+document.cookie = "current_file="+filepath;
 
+
+  
   change_value(enc.decode(read.blob));
 
 
+}
+async function read_cookie(filepath){
+  var oid = getCookie("oid");
+
+  await workerThread.setDir("/");
+  let read = await workerThread.read({
+    oid: oid,
+    filepath: filepath,
+  });
+  var enc = new TextDecoder("utf-8");
+
+console.log(enc.decode(read.blob));  
 }

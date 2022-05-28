@@ -1,4 +1,8 @@
+ history.pushState("", document.title, window.location.pathname + window.location.search);
 var url = null
+function change_lang(response){
+monaco.editor.setModelLanguage(window.editor.getModel(),response)
+ }
 function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -14,15 +18,15 @@ function getCookie(cname) {
   }
   return "";
 }
+function getEditorCode() {
+  return window.editor.getValue()
+}
 
-function selectlang(lang_id){
-document.cookie = "lang_id="+lang_id;
 
-document.getElementById("editorheader").innerHTML=files_name[lang_id];
+
+
 require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' }});
 window.MonacoEnvironment = { getWorkerUrl: () => proxy };
-document.getElementById(lang_id).style.border = "2px solid blue";
-document.getElementById(lang_id).style.background = "#03a9f41a";
 let proxy = URL.createObjectURL(new Blob([`
 	self.MonacoEnvironment = {
 		baseUrl: 'https://unpkg.com/monaco-editor@0.8.3/min/'
@@ -31,27 +35,31 @@ let proxy = URL.createObjectURL(new Blob([`
 `], { type: 'text/javascript' }));
 
 require(["vs/editor/editor.main"], function () {
-	window.editor = monaco.editor.create(document.getElementById('editor'), {language: document.getElementById(lang_id).getAttribute("mode"),
+	window.editor = monaco.editor.create(document.getElementById('editor'), {
+    language: "plaintext",
 		theme: 'vs-dark',
     wordWrap: true,
+     automaticLayout: true,                                                                       
     minimap: {
 		enabled: true
 	}});
 	
-	// editor.addListener('didType', () => {
-	// 	buttonclick68()
-	// });
-  
+
 });
 
-}
+
 function add(){
   var x = document.querySelector(".lang-inner");
     x.style.display="block";
 }
-function close_add(){
-  var x = document.querySelector(".lang-inner");
+function open_commit_pane(){
+  var x = document.getElementById("commithash");
+  if ( x.style.display === "none"){
+    x.style.display="block";
+  }
+  else{
     x.style.display="none";
+  }
 }
 function files(){
   var x = document.getElementById("tree");
@@ -72,4 +80,22 @@ function find(){
 window.editor?.focus();
                 const action = window.editor?.getAction("actions.find");
                 void action?.run();
+}
+
+function help(){
+  alert(`Xenon is a Cloud based (C9) editor for developing HTML applications. Xenon strictly adheres to google's material design guidelines. Xenon has a very powerful UI making it easy to develop applications for beginners as well as powerful features for experienced developers.Xenon is a client side editor ie: Xenon does not collect any user data.
+
+ Keyboard shortcuts ⌨️
+
+
+Tip : Click on the editor once before using the Shortcuts in case of errors
+
+Settings pallette : Ctrl + ,
+Find and replace : Ctrl + F
+To lowercase : Ctrl + Shift + U
+Undo : Ctrl + Z
+Redo : Ctrl + Shift + Z
+Go to line : Ctrl + L
+Comment : Ctrl + /
+`)
 }

@@ -1,76 +1,68 @@
-var config = {
-  apiKey: "AIzaSyA17yiXJ1BO3yvPd0JIfUgSj4WfRNTGTWw",
-  authDomain: "krios-studio.firebaseapp.com",
-  databaseURL: "https://krios-studio-default-rtdb.firebaseio.com",
-  projectId: "krios-studio",
-  storageBucket: "krios-studio.appspot.com",
-  messagingSenderId: "106933948741",
-  appId: "1:106933948741:web:75f91a5f0e222f2c38ae2c",
-  measurementId: "G-MQVQ7YDZX3"
-};
+ const config = {
+    apiKey: "AIzaSyA17yiXJ1BO3yvPd0JIfUgSj4WfRNTGTWw",
+    authDomain: "krios-studio.firebaseapp.com",
+    databaseURL: "https://krios-studio-default-rtdb.firebaseio.com",
+    projectId: "krios-studio",
+    storageBucket: "krios-studio.appspot.com",
+    messagingSenderId: "106933948741",
+    appId: "1:106933948741:web:ee544b08056d72d538ae2c",
+    measurementId: "G-7QGMC09M01"
+  };
 firebase.initializeApp(config);
 
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
 
-    // document.getElementById("login_div").style.display = "none";
+
   const user = firebase.auth().currentUser;
 if (user !== null) {
   user.providerData.forEach((profile) => {
 
-document.cookie="avatar="+profile.photoURL;
-    document.getElementById("user-img").src=profile.photoURL;
-const options = {method: 'GET', headers: {'content-type': 'application/json'}};
 
-fetch('https://api.github.com/user/'+profile.uid, options)
-  .then(response => response.json())
-  .then(response => n(response.login))
-  .catch(err => console.error(err));
+
+document.getElementById("user-img").src=profile.photoURL;
+document.cookie="user="+profile.displayName;
+ console.log(profile);   
+const user = "firescrypt";
+const provider = "git.krios.studio";
+const dbRef = firebase.database().ref();
+dbRef.child("user").child(user).get().then((snapshot) => {
+  if (snapshot.exists()) {
+    Object.keys(snapshot.val()).forEach(function(n){
+      document.getElementById("languages").innerHTML += `
+<div class="div" onclick='doCloneAndStuff("${"http://"+provider+"/"+user+"/"+n}","${user+"/"+n}","${user}","${n}")'>${n}</div>
+`
+    })
+  } else {
+    console.log("No data available");
+  }
+}).catch((error) => {
+  console.error(error);
 });
 
-function m(children){
-for (var i = 0; i < children.length; i++){
-    var m = children[i];
-  document.getElementById("languages").innerHTML += `<div class="div" onclick="doCloneAndStuff('${m.html_url}','${m.full_name}')" id="${m.full_name}"><div><img src="${getCookie("avatar")}"/>${m.full_name}</div></div>`
-}
-}
-
-function n(login){
-const options1 = {method: 'GET', headers: {'content-type': 'application/json'}};
-  
-fetch('https://api.github.com/users/'+login+"/repos", options1)
-  .then(response => response.json())
-  .then(response => m(response))
-  .catch(err => console.error(err));  
-}
 
 
-}
+
+
+})}
 
 
     
   } 
- else {
-    // No user is signed in.
-    
- var provider = new firebase.auth.GithubAuthProvider();
-  firebase.auth().signInWithRedirect(provider);
-  firebase.auth()
-  .getRedirectResult()
+ else{
+   var provider = new firebase.auth.GoogleAuthProvider();
+   firebase.auth()
+  .signInWithPopup(provider)
   .then((result) => {
-    if (result.credential) {
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
+    /** @type {firebase.auth.OAuthCredential} */
+    var credential = result.credential;
 
-      // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-      var token = credential.accessToken;
-      // ...
-    }
-
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    var token = credential.accessToken;
     // The signed-in user info.
     var user = result.user;
-    console.log(user)
+    // ...
   }).catch((error) => {
     // Handle Errors here.
     var errorCode = error.code;
@@ -81,7 +73,5 @@ fetch('https://api.github.com/users/'+login+"/repos", options1)
     var credential = error.credential;
     // ...
   });
-
-  
-  }
+ }
 });

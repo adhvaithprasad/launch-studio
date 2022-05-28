@@ -2,218 +2,249 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>Waffle launch studio</title>
+  <meta charset="utf-8">
+  <style type="text/css" media="screen" class="vscode-tokens-styles">
+    .mtk1 {
+      color: #c9d1d9 !important;
+    }
+
+    .mtk2 {
+      color: #0d1117 !important;
+    }
+
+    .mtk3 {
+      color: #8b949e !important;
+    }
+
+    .mtk4 {
+      color: #79c0ff !important;
+    }
+
+    .mtk5 {
+      color: #ffa657 !important;
+    }
+
+    .mtk6 {
+      color: #d2a8ff !important;
+    }
+
+    .mtk7 {
+      color: #7ee787 !important;
+    }
+
+    .mtk8 {
+      color: #ff7b72 !important;
+    }
+
+    .mtk9 {
+      color: #a5d6ff !important;
+    }
+
+    .mtk10 {
+      color: #ffa198 !important;
+    }
+
+    .mtk11 {
+      color: #f0f6fc !important;
+    }
+
+    .mtk12 {
+      color: #490202 !important;
+    }
+
+    .mtk13 {
+      color: #04260f !important;
+    }
+
+    .mtk14 {
+      color: #5a1e02 !important;
+    }
+
+    .mtk15 {
+      color: #161b22 !important;
+    }
+
+    .mtk16 {
+      color: #6796e6 !important;
+    }
+
+    .mtk17 {
+      color: #cd9731 !important;
+    }
+
+    .mtk18 {
+      color: #f44747 !important;
+    }
+
+    .mtk19 {
+      color: #b267e6 !important;
+    }
+
+    .mtki {
+      font-style: italic !important;
+    }
+
+    .mtkb {
+      font-weight: bold !important;
+    }
+
+    .mtku {
+      text-decoration: underline !important;
+      text-underline-position: under !important;
+    }
+
+    .mtks {
+      text-decoration: line-through !important;
+    }
+
+    .mtks.mtku {
+      text-decoration: underline line-through !important;
+      text-underline-position: under !important;
+    }
+  </style>
+  <meta name="viewport" content="width=device-width">
+  <title>Waffle launch studio</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js">
+
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="https://stackedit.io/style.css" />
-  	<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js">
-	</script>
-	<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js">
-	</script>
-  	<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js">
-	</script>
-	<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js">
-	</script>
-	<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js">
-	</script>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js">
+  </script>
   <link rel="stylesheet" href="style.css">
-      
-   <script src="https://unpkg.com/magic-portal"></script>
-<script src="https://unpkg.com/monaco-editor@0.8.3/min/vs/loader.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu"
-	 crossorigin="anonymous">
-    
-	<link rel="icon" href="https://raw.githubusercontent.com/Launchstudio/Launchstudio.github.io/main/waffle.jpg" sizes="16x16">
+<link rel="stylesheet" href="monaco.css">
+  <script src="https://unpkg.com/magic-portal"></script>
+  <script src="https://unpkg.com/monaco-editor@0.8.3/min/vs/loader.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+    integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+
+  <link rel="icon" href="https://raw.githubusercontent.com/Launchstudio/Launchstudio.github.io/main/waffle.jpg"
+    sizes="16x16">
 
 
 </head>
 
 <body>
 
-<div class="snippet" id="progress"data-title=".dot-falling">
-          <div class="stage">
-            <div class="dot-falling"></div>
-          </div>
-        </div>
-
-<div id="tree"></div>
-
-
-
-	<header>
-<div id="logocontainer">
-			<i class="fas fa-vector-square"></i>
-      <div>
-        <p id="name">Xenon</p>
-        <a id="url">Xenon / Draw</a>
-      </div>
-		</div>
-
-<div id="icon-container">
-  
-      <button onclick="files()" id="search-button"><i class="fas fa-folder"></i></button> 
-   <button  id="search-button"><i class="fas fa-cog"></i></button> 
-  <button onclick="search()" id="search-button"><i class="fas fa-angle-double-right"></i></button> 
-      <button onclick="search()" id="search-button"><i class="fas fa-comment"></i></button>
-      <button onclick="search()" id="search-button"><i class="fas fa-bug"></i></button>
-      <button onclick="search()" id="search-button"><i class="fas fa-code-branch"></i></button>
-       <button onclick="search()" id="search-button"><i class="fas fa-book"></i></button>
-  <button onclick="search()" id="search-button"><i class="fas fa-terminal"></i></button>
-  
-</div>
-		<div id="buttoncontainer">
-
-			<button onclick="run()" id="dashboard" data-tippy-content="Tooltip"><i class="fas fa-play"></i>  Run </button>
-   <button onclick="tree()" id="dashboard" ><i class="fas fa-users"></i>  Invite </button>    
-   
-
-<img id="user-img"/>
-      
-
-
-
-      
-        </div>  
-          
-
-
-
-      </header>
-      <main>
-        
-<div id="maintainer">
-  <p id="editorheader">index.html</p>
-  <div id="editor" >
-
-</div>
-  <div id="editorfooter">
-    <button onclick="minify()">Format</button>
-    <button onclick="find()">Search</button>
+  <div class="snippet" id="progress" data-title=".dot-falling">
+    <div class="stage">
+      <div class="dot-falling"></div>
+    </div>
   </div>
-</div>
-    <div class="result-container">
+
+  <div id="tree"></div>
+
+
+
+  <header>
+    <div id="logocontainer">
+      <i class="fas fa-vector-square"></i>
+      <div>
+        <p id="name"></p>
+        <a id="url"></a>
+      </div>
+    </div>
+
+
+    <div id="buttoncontainer">
+
+      <button onclick="run()" id="dashboard" data-tippy-content="Tooltip"><i class="fas fa-play"></i> Run </button>
+      <button onclick="cloud()" id="dashboard"><i class="fas fa-star"></i> Starred </button>
+
+
+      <img id="user-img" />
+
+
+
+
+
+    </div>
+
+
+
+
+  </header>
+  <main>
+    <div class="commit" id="commithash"></div>
+    <div id="icon-container">
+
+      <i class="material-icons mdc-button__icon run-icon" aria-hidden="true" title="menu" onclick="files()" id="run"
+        style="margin-top:8px;"> source </i><i class="material-icons mdc-button__icon" aria-hidden="true"
+        title="menu" onclick="find()"> settings </i><i class="material-icons mdc-button__icon" aria-hidden="true"
+        title="menu" onclick="r()"> rocket_launch </i><i class="material-icons mdc-button__icon" aria-hidden="true"
+        title="menu" onclick="bugs()"> bug_report </i><i class="material-icons mdc-button__icon" aria-hidden="true"
+        title="menu" onclick="help()"> help_center </i> <i class="material-icons mdc-button__icon"
+        aria-hidden="true" title="menu" onclick="open_commit_pane()"> commit </i>
+      <i class="material-icons mdc-button__icon"
+        aria-hidden="true" title="menu" onclick="find()"> search </i>
+    </div>
+    <div id="maintainer">
+     
+
+      <div id="editor">
+
+      </div>
+     
+    </div>
+        <div class="result-container">
       <div class="result-header">
       
-<p>Result</p>
+<button onclick="runInput()"><i class="fas fa-play"></i>Run with input</button>
      
   
       </div>
        <div  id="output" ></div>
       
     </div>
-        
-      <div class="languages" >
+
+    <div class="languages">
 
 
-        
-        <header>
-          <i class="fas fa-vector-square"></i>
-          <div>
-            <button onclick="add()">New Repository</button>
-          </div>
-        </header>
+
+      <header>
+        <i class="fas fa-vector-square"></i>
+        <div>
+          <button onclick="add()">New Repository</button>
+        </div>
+      </header>
 
 
-<div class="title"><p>Repositories</p></div>
- <div id="languages"></div>       
-
-
-        
+      <div class="title">
+        <p>Repositories</p>
       </div>
-        <div class="lang-inner">
-  
+      <div id="languages"></div>
 
-<div class="title">
-  <input type="text" placeholder="Name"/>
-  <button>Add</button>
-  <i class="fas fa-times" onclick="close_add()"></i>
-</div>
-        
-        <div onclick="selectlang(this.id)" class="language div" id="450" mode="html">HTML</div>
-   <div onclick="selectlang(this.id)"class="language div" id="45" mode="UNKNOWN">Assembly (NASM 2.14.02)</div>
-<div onclick="selectlang(this.id)"class="language div" id="46" mode="shell">Bash (5.0.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="47" mode="UNKNOWN">Basic (FBC 1.07.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="75" mode="c">C (Clang 7.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1013" mode="c">C (Clang 9.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1001" mode="c">C (Clang 10.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="48" mode="c">C (GCC 7.4.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="49" mode="c">C (GCC 8.3.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="50" mode="c">C (GCC 9.2.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="51" mode="csharp">C# (Mono 6.6.0.161)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1022" mode="csharp">C# (Mono 6.10.0.104)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1021" mode="csharp">C# (.NET Core SDK 3.1.302)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1023" mode="csharp">C# Test (.NET Core SDK 3.1.302, NUnit 3.12.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="76" mode="cpp">C++ (Clang 7.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1014" mode="cpp">C++ (Clang 9.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1002" mode="cpp">C++ (Clang 10.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="52" mode="cpp">C++ (GCC 7.4.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="53" mode="cpp">C++ (GCC 8.3.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="54" mode="cpp">C++ (GCC 9.2.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1015" mode="cpp">C++ Test (Clang 10.0.1, Google Test 1.8.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1012" mode="cpp">C++ Test (GCC 8.4.0, Google Test 1.8.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1003" mode="c">C3 (latest)</div>
-<div onclick="selectlang(this.id)"class="language div" id="86" mode="clojure">Clojure (1.10.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="77" mode="UNKNOWN">COBOL (GnuCOBOL 2.2)</div>
-<div onclick="selectlang(this.id)"class="language div" id="55" mode="UNKNOWN">Common Lisp (SBCL 2.0.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="56" mode="UNKNOWN">D (DMD 2.089.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="57" mode="UNKNOWN">Elixir (1.9.4)</div>
-<div onclick="selectlang(this.id)"class="language div" id="58" mode="UNKNOWN">Erlang (OTP 22.2)</div>
-<div onclick="selectlang(this.id)"class="language div" id="44" mode="plaintext">Executable</div>
-<div onclick="selectlang(this.id)"class="language div" id="87" mode="fsharp">F# (.NET Core SDK 3.1.202)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1024" mode="fsharp">F# (.NET Core SDK 3.1.302)</div>
-<div onclick="selectlang(this.id)"class="language div" id="59" mode="UNKNOWN">Fortran (GFortran 9.2.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="60" mode="go">Go (1.13.5)</div>
-<div onclick="selectlang(this.id)"class="language div" id="88" mode="UNKNOWN">Groovy (3.0.3)</div>
-<div onclick="selectlang(this.id)"class="language div" id="61" mode="UNKNOWN">Haskell (GHC 8.8.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="62" mode="java">Java (OpenJDK 13.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1004" mode="java">Java (OpenJDK 14.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1005" mode="java">Java Test (OpenJDK 14.0.1 JUnit Platform)</div>
-<div onclick="selectlang(this.id)"class="language div" id="63" mode="javascript">JavaScript (Node.js 12.14.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="78" mode="kotlin">Kotlin (1.3.70)</div>
-<div onclick="selectlang(this.id)"class="language div" id="64" mode="lua">Lua (5.3.5)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1006" mode="c">MPI (OpenRTE 3.1.3) with C (GCC 8.3.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1007" mode="cpp">MPI (OpenRTE 3.1.3) with C++ (GCC 8.3.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1008" mode="python">MPI (OpenRTE 3.1.3) with Python (3.7.3)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1009" mode="python">Nim (stable)</div>
-<div onclick="selectlang(this.id)"class="language div" id="79" mode="objective-c">Objective-C (Clang 7.0.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="65" mode="UNKNOWN">OCaml (4.09.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="66" mode="UNKNOWN">Octave (5.1.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="67" mode="pascal">Pascal (FPC 3.0.4)</div>
-<div onclick="selectlang(this.id)"class="language div" id="85" mode="perl">Perl (5.28.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="68" mode="php">PHP (7.4.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="43" mode="plaintext">Plain Text</div>
-<div onclick="selectlang(this.id)"class="language div" id="69" mode="UNKNOWN">Prolog (GNU Prolog 1.4.5)</div>
-<div onclick="selectlang(this.id)"class="language div" id="70" mode="python">Python (2.7.17)</div>
-<div onclick="selectlang(this.id)"class="language div" id="71" mode="python">Python (3.8.1)</div>
-<div onclick="selectlang(this.id)"class="language div" id="1010" mode="python">Python for ML (3.7.3)</div>
-<div onclick="selectlang(this.id)"class="language div" id="80" mode="r">R (4.0.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="72" mode="ruby">Ruby (2.7.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="73" mode="rust">Rust (1.40.0)</div>
-<div onclick="selectlang(this.id)"class="language div" id="81" mode="UNKNOWN">Scala (2.13.2)</div>
-<div onclick="selectlang(this.id)"class="language div" id="82" mode="sql">SQL (SQLite 3.27.2)</div>
-<div onclick="selectlang(this.id)"class="language div" id="83" mode="swift">Swift (5.2.3)</div>
-<div onclick="selectlang(this.id)"class="language div" id="74" mode="typescript">TypeScript (3.7.4)</div>
-<div onclick="selectlang(this.id)"class="language div" id="84" mode="vb">Visual Basic.Net (vbnc 0.0.0.5943)</div>
-      
-</div>
-      </main>
-      
-      <script
-        src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js"
-        type="text/javascript"
-        charset="utf-8"
-      ></script>
+
+
+    </div>
+   
+  </main>
+
+  <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript"
+    charset="utf-8"></script>
 
   <script src="languageDefaultFile.js"></script>
-<script src="script.js"></script>
+  <script src="script.js"></script>
+  <script src="hex.js"></script>
   <script src="firebase.js"></script>
-  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
-<script  src="git.js"></script>
+  <script src="issue.js"></script>
+  <script src="listen.js"></script>
+  <script src="git.js"></script>
   <script src="compiler.js"></script>
   <script src="treeview.js"></script>
 </body>
+
 </html>

@@ -19,10 +19,10 @@ fetch("https://codesandbox.io/api/v1/sandboxes/define?json=1", {
         }
       },
       "index.js": {
-        content: code
+        content: "hi"
       },
       "index.html": {
-        content: html
+        content: "html"
       }
     }
   })
