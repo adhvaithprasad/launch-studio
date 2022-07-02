@@ -9,17 +9,17 @@ importScripts(
 
 let fs = new LightningFS("fs", { wipe: true });
 const portal = new MagicPortal(self);
-self.addEventListener("message", ({ data }) => console.log(data));
+// self.addEventListener("message", ({ data }) => console.log(data));
 
 (async () => {
   let mainThread = await portal.get("mainThread");
   let dir = "/";
-  
+
   portal.set("workerThread", {
-    setDir: async _dir => {
+    setDir: async (_dir) => {
       dir = _dir;
     },
-    clone: async args => {
+    clone: async (args) => {
       fs = new LightningFS("fs", { wipe: true });
       return git.clone({
         ...args,
@@ -39,10 +39,9 @@ self.addEventListener("message", ({ data }) => console.log(data));
         }
       });
     },
-    listBranches: args => git.listBranches({ ...args, fs, dir }),
-    listFiles: args => git.listFiles({ ...args, fs, dir }),
-    log: args => git.log({ ...args, fs, dir }),
-    read: args => git.readBlob({ ...args,fs, dir})
-
-
-})})();
+    listBranches: (args) => git.listBranches({ ...args, fs, dir }),
+    listFiles: (args) => git.listFiles({ ...args, fs, dir }),
+    log: (args) => git.log({ ...args, fs, dir }),
+    read: (args) => git.readBlob({ ...args, fs, dir })
+  });
+})();
