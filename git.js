@@ -33,6 +33,14 @@ window.addEventListener(
         .then((snapshot) => {
           if (snapshot.exists()) {
             change_lang(snapshot.val().lang);
+            console.log(snapshot.val().lang);
+            if (snapshot.val().lang === "markdown") {
+              document.getElementById("markdown-converter").style.display =
+                "block";
+            } else {
+              document.getElementById("markdown-converter").style.display =
+                "none";
+            }
           } else {
             console.log("No data available");
           }
@@ -228,7 +236,11 @@ async function read(filepath) {
   var enc = new TextDecoder("utf-8");
 
   document.cookie = "current_file=" + filepath;
-  document.cookie = "current_file_value=" + enc.decode(read.blob);
+  var x = document.getElementById("markdown-container");
+  var y = document.getElementById("markdown-converter");
+  x.style.display = "none";
+  y.style.display = "none";
+
   change_value(enc.decode(read.blob));
 }
 async function read_without_change(filepath) {
@@ -255,4 +267,18 @@ async function read_cookie(filepath) {
   var enc = new TextDecoder("utf-8");
 
   console.log(enc.decode(read.blob));
+}
+function convertToMarkdown() {
+  var x = document.getElementById("markdown-container");
+  var y = document.getElementById("markdown-converter");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.innerHTML = "edit";
+    document.getElementById("markdown").innerHTML = marked.parse(
+      getEditorCode()
+    );
+  } else {
+    x.style.display = "none";
+    y.innerHTML = "visibility";
+  }
 }

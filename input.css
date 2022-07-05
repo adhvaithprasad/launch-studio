@@ -413,7 +413,7 @@ button#create-bug {
   background: #2196f3;
   font-family: "Circular Std";
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
 }
 button#discard-bug {
   font-family: "Circular Std";

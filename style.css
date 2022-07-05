@@ -330,6 +330,7 @@ p {
   z-index: 110;
   top: 86px;
   color: white;
+  width: 362px;
   background: #0b101c;
   padding: 10px;
   height: 80%;
@@ -682,4 +683,28 @@ div#review {
   max-width: -webkit-fill-available;
   margin: 10px;
   overflow: scroll;
+}
+#markdown-converter {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: 50px;
+  right: 80px;
+  border-radius: 50%;
+  color: #6fc3df;
+  background: #100f0f;
+  padding: 20px;
+  z-index: 20;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+}
+.markdown-render {
+  height: 100%;
+  flex: 1;
+  overflow: auto;
+  z-index: 10;
+  display: none;
+  width: calc(100% - 60px);
+  right: 0;
+  position: absolute;
+  background: #0f1625;
 }
