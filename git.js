@@ -270,7 +270,6 @@ async function folder(folder) {
     var j = folder + "/";
     var k = n.split(j)[1];
     if (typeof k !== "undefined") {
-      console.log(n.split(j));
       files_in.push({
         refined: k,
         original: n
@@ -283,6 +282,7 @@ async function folder(folder) {
   ).innerHTML = `<div class='back-button material-icons mdc-button__icon' onclick="back()">arrow_back</div>`;
   files_in.forEach(function (n) {
     folder_addfile(n);
+    document.cookie = "absolute_link=" + n.original;
   });
 }
 async function home() {
