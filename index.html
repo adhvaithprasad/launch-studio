@@ -143,6 +143,7 @@
   </head>
 
   <body>
+    <div id="info"></div>
     <i
       class="material-icons mdc-button__icon markdown-converter-button"
       aria-hidden="true"
@@ -152,7 +153,24 @@
     >
       visibility
     </i>
-
+    <i
+      class="material-icons mdc-button__icon html-preview-button"
+      aria-hidden="true"
+      title="menu"
+      onclick="htmlpreview()"
+      id="html-converter"
+    >
+      visibility
+    </i>
+    <i
+      class="material-icons mdc-button__icon html-preview-button"
+      aria-hidden="true"
+      title="menu"
+      onclick="run()"
+      id="run-converter"
+    >
+      play_arrow
+    </i>
     <progress class="pure-material-progress-linear loaders"></progress>
     <div class="bug-create-container" id="settings">
       <h2>Settings</h2>
@@ -184,6 +202,8 @@
       </div>
     </div>
 
+    <div id="output"></div>
+
     <div id="bug-tree">
       <section style="display: flex; justify-content: flex-end;">
         <button id="dashboard" onclick="bugs()">Add bug</button>
@@ -201,11 +221,8 @@
       </div>
 
       <div id="buttoncontainer">
-        <button onclick="run()" id="dashboard" data-tippy-content="Tooltip">
-          <i class="fas fa-play"></i> Run
-        </button>
         <button onclick="cloud()" id="dashboard">
-          <i class="fas fa-star"></i> Starred
+          <i class="fas fa-code-branch"></i> Commit
         </button>
 
         <img id="user-img" />
@@ -213,12 +230,36 @@
     </header>
 
     <main>
+        <div class="package-readme" id="package-readme-container">
+            <header> <i class="material-icons mdc-button__icon" aria-hidden="true" title="menu" onclick="close_package_readme()">
+                      close
+                    </i></header>
+                    <div id="package-readme"></div>
+            
+        </div>
+      <div class="package-container" id="package-container">
+        <div class="search-container">
+          <div class="micro-search-cont">
+              <input class="package-search" id="package-search" oninput="find_package()"></input>
+              <i
+              class="material-icons mdc-button__icon"
+              aria-hidden="true"
+              title="menu"
+              onclick="find_package()"
+            >
+              search
+            </i>
+          </div>
+        </div>
+        <div class="packages" id="packages"></div>
+      </div>
       <div
         id="markdown-container"
         class="markdown-render markdown-container stackedit"
       >
         <div id="markdown" class="stackedit__html"></div>
       </div>
+      <iframe id="html-container"></iframe>
       <div class="commit" id="commithash"></div>
       <div id="icon-container">
         <i
@@ -269,9 +310,29 @@
         >
           search
         </i>
+        <i
+          class="material-icons mdc-button__icon"
+          aria-hidden="true"
+          title="menu"
+          onclick="packages()"
+        >
+          inventory_2
+        </i>
       </div>
       <div id="maintainer">
         <div id="editor"></div>
+        <div class="footer">
+          <i
+            class="material-icons mdc-button__icon"
+            aria-hidden="true"
+            title="menu"
+          >
+            keyboard
+          </i>
+          <a>Privacy</a>
+          <a>Send feedback</a>
+          <p id="commit-id"></p>
+        </div>
       </div>
       <!-- <div class="result-container">
         <div class="result-header">
@@ -311,7 +372,7 @@
     <script src="issue.js"></script>
     <script src="listen.js"></script>
     <script src="git.js"></script>
-
+    <script src="package.js"></script>
     <script src="compiler.js"></script>
     <script src="treeview.js"></script>
   </body>

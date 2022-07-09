@@ -1,5 +1,7 @@
 document.cookie = "lang_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 document.cookie =
+  "absolute_link=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+document.cookie =
   "current_file=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 document.cookie = "files=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 document.cookie = "fname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -10,12 +12,39 @@ const genRand = (len) => {
     .toString(36)
     .substring(2, len + 2);
 };
+function back() {
+  var arr = breadcrumb(getCookie("absolute_link"));
+  var index = arr.length - 2;
+  var path = arr[index];
+  console.log(path, arr);
+  if (index === "undefined") {
+    home();
+  } else {
+    folder(path);
+  }
+}
+function breadcrumb(file_name) {
+  var arr = file_name.split("/");
+  let val;
+  var crumbs = [];
+  arr.forEach(function (elem) {
+    if (val === undefined) {
+      val = elem;
+      crumbs.push(val);
+    } else {
+      val = val + "/" + elem;
+      crumbs.push(val);
+    }
+  });
+  return crumbs;
+}
+
 window.addEventListener(
   "hashchange",
   function () {
     var hash = window.location.hash.replace(/#/g, "");
     var m = genRand(8);
-
+    console.log(breadcrumb(hash));
     firebase
       .database()
       .ref("file-detect/" + m)
@@ -34,12 +63,16 @@ window.addEventListener(
           if (snapshot.exists()) {
             change_lang(snapshot.val().lang);
             console.log(snapshot.val().lang);
-            if (snapshot.val().lang === "markdown") {
-              document.getElementById("markdown-converter").style.display =
-                "block";
+            var m1 = document.getElementById("markdown-converter").style;
+            var r1 = document.getElementById("run-converter").style;
+            var h1 = document.getElementById("html-converter").style;
+            var language = snapshot.val().lang;
+            if (language === "markdown") {
+              m1.display = "block";
+            } else if (language === "html") {
+              h1.display = "block";
             } else {
-              document.getElementById("markdown-converter").style.display =
-                "none";
+              r1.display = "block";
             }
           } else {
             console.log("No data available");
@@ -66,7 +99,7 @@ const mainThread = {
       document.getElementsByClassName("loaders")[0].style.display = "none";
       document.getElementsByClassName("loaders")[1].style.display = "none";
     } else {
-      if (evt.total === undefined) {
+      if (evt.total === "undefined") {
         console.log(evt);
         document.getElementsByClassName("loaders")[0].style.display = "flex";
         document.getElementsByClassName("loaders")[1].style.display = "flex";
@@ -84,103 +117,126 @@ const mainThread = {
     return { username, password };
   },
   async rejected({ url, auth }) {
-    window.alert("Authentication rejected");
+    window.alert1("Authentication rejected");
     return;
   }
 };
 portal.set("mainThread", mainThread, {
   void: ["print", "progress", "rejected"]
 });
-
+function addfile(file) {
+  let image =
+    "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
+  if (document.getElementById(file.split("/")[0])) {
+  } else {
+    if (file.split("/").length > 1) {
+      $("tree").innerHTML += `<div  id="${
+        file.split("/")[0]
+      }" class="file-container" onclick="folder('${file.split("/")[0]}')">
+<img src="https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/folder-home.svg" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`;
+    } else {
+      $("tree").innerHTML += `<div data-tippy="${file}" id="${
+        file.split("/")[0]
+      }" class="file-container" onclick="window.location.hash='${file}'">
+<img src="${
+        image + file.split(".")[file.split(".").length - 1] + ".svg"
+      }" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`;
+    }
+  }
+}
+function folder_addfile(files) {
+  let file = files.refined;
+  let absolute = files.original;
+  let image =
+    "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
+  if (document.getElementById(file.split("/")[0])) {
+  } else {
+    if (file.split("/").length > 1) {
+      $("tree").innerHTML += `<div  id="${
+        file.split("/")[0]
+      }" class="file-container" onclick="folder('${file.split("/")[0]}')">
+<img src="https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/folder-home.svg" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`;
+    } else {
+      $("tree").innerHTML += `<div data-tippy="${file}" id="${
+        file.split("/")[0]
+      }" class="file-container" onclick="window.location.hash='${absolute}'">
+<img src="${
+        image + file.split(".")[file.split(".").length - 1] + ".svg"
+      }" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
+/>${file.split("/")[0]}</div>`;
+    }
+  }
+}
 async function doCloneAndStuff(url, fname, user, name) {
-  document.cookie = "fname=" + fname;
+  try {
+    document.cookie = "fname=" + fname;
 
-  firebase
-    .database()
-    .ref()
-    .child("Jira")
-    .get()
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        Object.keys(snapshot.val()).forEach(function (m) {
-          add_bug(
-            snapshot.val()[m].summary,
-            snapshot.val()[m].label,
-            snapshot.val()[m].creator,
-            snapshot.val()[m].description
-          );
-        });
-      } else {
-        // console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+    firebase
+      .database()
+      .ref()
+      .child("Jira")
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          Object.keys(snapshot.val()).forEach(function (m) {
+            add_bug(
+              snapshot.val()[m].summary,
+              snapshot.val()[m].label,
+              snapshot.val()[m].creator,
+              snapshot.val()[m].description
+            );
+          });
+        } else {
+          // console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    $("url").innerHTML = user;
+    $("name").innerHTML = name;
+
+    //   document.getElementById(fname).style.border = "2px solid blue";
+    // document.getElementById(fname).style.background = "#03a9f41a";
+    document.querySelector(".languages").style.display = "none";
+    // document.getElementsByClassName("loaders")[0].style.display = "flex";
+    await workerThread.setDir("/");
+
+    await workerThread.clone({
+      corsProxy: "https://cors.isomorphic-git.org",
+      url: url
     });
 
-  $("url").innerHTML = user;
-  $("name").innerHTML = name;
-
-  //   document.getElementById(fname).style.border = "2px solid blue";
-  // document.getElementById(fname).style.background = "#03a9f41a";
-  document.querySelector(".languages").style.display = "none";
-  // document.getElementsByClassName("loaders")[0].style.display = "flex";
-  await workerThread.setDir("/");
-
-  await workerThread.clone({
-    corsProxy: "https://cors.isomorphic-git.org",
-    url: url
-  });
-
-  let commits = await workerThread.log({});
-  commits.forEach(function (commit) {
-    if (oid === undefined) {
-      oid = commit.oid;
-      document.cookie = "oid=" + oid;
-    }
-  });
-  commits.forEach(function (commit) {
-    $("commithash").innerHTML += `<div   class="commit-container">
+    let commits = await workerThread.log({});
+    commits.forEach(function (commit) {
+      if (oid === undefined) {
+        oid = commit.oid;
+        document.cookie = "oid=" + oid;
+      }
+    });
+    commits.forEach(function (commit) {
+      $("commithash").innerHTML += `<div   class="commit-container">
 <p class="commit-message">${commit.commit.message}</p>
 <p class="commit-author">${commit.commit.author.name}</p>
 <p class="commit-id">${commit.oid.slice(0, 8)}</p>
 </div>`;
-  });
-  var oid = getCookie("oid");
+    });
+    var oid = getCookie("oid");
+    document.getElementById("commit-id").innerHTML = oid.slice(0, 8);
+    let files = await workerThread.listFiles({});
 
-  let files = await workerThread.listFiles({});
+    document.cookie = "files=" + JSON.stringify(files);
 
-  document.cookie = "files=" + JSON.stringify(files);
-  let image =
-    "https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/";
-
-  function addfile(file) {
-    if (document.getElementById(file.split("/")[0])) {
-    } else {
-      if (file.split("/").length > 1) {
-        $("tree").innerHTML += `<div  id="${
-          file.split("/")[0]
-        }" class="file-container" onclick="window.location.hash='${
-          file.split("/")[0]
-        }'">
-<img src="https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/folder-home.svg" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
-/>${file.split("/")[0]}</div>`;
-      } else {
-        $("tree").innerHTML += `<div data-tippy="${file}" id="${
-          file.split("/")[0]
-        }" class="file-container" onclick="window.location.hash='${
-          file.split("/")[0]
-        }'">
-<img src="${
-          image + file.split(".")[file.split(".").length - 1] + ".svg"
-        }" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/file.svg';"
-/>${file.split("/")[0]}</div>`;
-      }
-    }
+    document.getElementById("tree").style.padding = "10px";
+    files.forEach((file) => addfile(file));
+    create_json(files);
+  } catch (error) {
+    alert1(error);
   }
-
-  files.forEach((file) => addfile(file));
-  create_json(files);
 }
 function push_to_obj(object, key, value) {
   object[key] = { content: value };
@@ -204,6 +260,41 @@ async function create_json(files) {
     }
   }
   m();
+}
+async function folder(folder) {
+  var oid = getCookie("oid");
+  await workerThread.setDir("/");
+  let files = await workerThread.listFiles({});
+  let files_in = [];
+  files.forEach(function (n) {
+    var j = folder + "/";
+    var k = n.split(j)[1];
+    if (typeof k !== "undefined") {
+      console.log(n.split(j));
+      files_in.push({
+        refined: k,
+        original: n
+      });
+    }
+  });
+
+  document.getElementById(
+    "tree"
+  ).innerHTML = `<div class='back-button material-icons mdc-button__icon' onclick="back()">arrow_back</div>`;
+  files_in.forEach(function (n) {
+    folder_addfile(n);
+  });
+}
+async function home() {
+  console.log("home");
+  var oid = getCookie("oid");
+  await workerThread.setDir("/");
+  let files = await workerThread.listFiles({});
+  document.getElementById("tree").innerHTML = ``;
+  files.forEach(function (n) {
+    document.cookie = "absolute_link=repo_initial_point_branch_main/";
+    addfile(n);
+  });
 }
 function sandbox(sandbox_files) {
   // Create a root reference
@@ -240,7 +331,15 @@ async function read(filepath) {
   var y = document.getElementById("markdown-converter");
   x.style.display = "none";
   y.style.display = "none";
-
+  var a = document.getElementById("html-container");
+  var b = document.getElementById("html-converter");
+  a.style.display = "none";
+  b.style.display = "none";
+  var c = document.getElementById("output");
+  var d = document.getElementById("run-converter");
+  c.style.display = "none";
+  d.style.display = "none";
+  document.getElementById("output").style.display = "none";
   change_value(enc.decode(read.blob));
 }
 async function read_without_change(filepath) {
@@ -280,5 +379,93 @@ function convertToMarkdown() {
   } else {
     x.style.display = "none";
     y.innerHTML = "visibility";
+  }
+}
+function createUrl(html) {
+  var blob = new Blob([html], { type: "text/html" });
+  return URL.createObjectURL(blob);
+}
+
+function removeUrl(url) {
+  URL.revokeObjectURL(url);
+}
+
+function getEditorCode() {
+  return window.editor.getValue();
+}
+
+function htmlpreview() {
+  var x = document.getElementById("html-container");
+  var y = document.getElementById("html-converter");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.innerHTML = "edit";
+    var code = getEditorCode();
+    removeUrl(url);
+    url = createUrl(code);
+    x.src = url;
+  } else {
+    x.style.display = "none";
+    y.innerHTML = "visibility";
+  }
+}
+function run() {
+  var x = document.getElementById("output");
+  var y = document.getElementById("run-converter");
+  console.log(files_name[getCookie("current_file").split(".")[1]]);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.innerHTML = "close";
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "Content-Type": "application/json",
+        "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+        "X-RapidAPI-Key": "6484043fd0mshec484bf71a9f73ap1534a8jsn357afe17b801"
+      },
+      body: JSON.stringify({
+        source_code: btoa(getEditorCode()),
+        language_id: files_name[getCookie("current_file").split(".")[1]].id,
+        wait: true
+      })
+    };
+
+    fetch(
+      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true&fields=*",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => res(response))
+      .catch((err) => console.error(err));
+  } else {
+    x.style.display = "none";
+    y.innerHTML = "play_arrow";
+  }
+}
+function res(response) {
+  console.log(response);
+
+  if (response.compile_output !== null) {
+    mes(atob(response.compile_output), response.status.description, "mo");
+  } else if (response.stderr !== null) {
+    mes(atob(response.stderr), response.status.description, "mo");
+  } else {
+    mes(atob(response.stdout), response.status.description, "n");
+  }
+}
+function mes(mes, des, nes) {
+  if (nes === "mo") {
+    document.getElementById("output").innerHTML += `<div style="
+    background: #4a0808;
+    color: #e48181;
+"><p>${des}</p><br><div style="
+    background: #4a0808;
+    color: #e48181;
+">${mes}</div></div>`;
+  } else {
+    document.getElementById(
+      "output"
+    ).innerHTML += `<div><p>${des}</p><br><div>${mes}</div></div>`;
   }
 }

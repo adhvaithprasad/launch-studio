@@ -1,3 +1,11 @@
+function alert1(m) {
+  var x = document.getElementById("info");
+  x.innerHTML = m;
+  x.style.display = "block";
+  setTimeout(function () {
+    x.style.display = "none";
+  }, 2000);
+}
 history.pushState(
   "",
   document.title,
@@ -106,7 +114,7 @@ function find() {
 }
 
 function help() {
-  alert(`Xenon is a Cloud based (C9) editor for developing HTML applications. Xenon strictly adheres to google's material design guidelines. Xenon has a very powerful UI making it easy to develop applications for beginners as well as powerful features for experienced developers.Xenon is a client side editor ie: Xenon does not collect any user data.
+  alert1(`Xenon is a Cloud based (C9) editor for developing HTML applications. Xenon strictly adheres to google's material design guidelines. Xenon has a very powerful UI making it easy to develop applications for beginners as well as powerful features for experienced developers.Xenon is a client side editor ie: Xenon does not collect any user data.
 
  Keyboard shortcuts ⌨️
 

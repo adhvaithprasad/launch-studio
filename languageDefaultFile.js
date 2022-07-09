@@ -1,66 +1,122 @@
 var files_name = {
-  "43": "text.txt",
-  "44": "a.out",
-  "46": "script.sh",
-  "47": "main.bas",
-  "48": "main.c",
-  "49": "main.c",
-  "50": "main.c",
-  "51": "Main.cs",
-  "52": "main.cpp",
-  "53": "main.cpp",
-  "54": "main.cpp",
-  "55": "script.lisp",
-  "56": "main.d",
-  "57": "script.exs",
-  "58": "main.erl",
-  "59": "main.f90",
-  "60": "main.go",
-  "61": "main.hs",
-  "62": "Main.java",
-  "63": "script.js",
-  "64": "script.lua",
-  "65": "main.ml",
-  "66": "script.m",
-  "67": "main.pas",
-  "68": "script.php",
-  "69": "main.pro",
-  "70": "script.py",
-  "71": "script.py",
-  "72": "script.rb",
-  "73": "main.rs",
-  "74": "script.ts",
-  "75": "main.c",
-  "76": "main.cpp",
-  "77": "main.cob",
-  "78": "Main.kt",
-  "79": "main.m",
-  "80": "script.r",
-  "81": "Main.scala",
-  "82": "script.sql",
-  "83": "Main.swift",
-  "84": "Main.vb",
-  "85": "script.pl",
-  "86": "main.clj",
-  "87": "script.fsx",
-  "88": "script.groovy",
-  "1001": "main.c",
-  "1002": "main.cpp",
-  "1003": "main.c3",
-  "1004": "Main.java",
-  "1005": "MainTest.java",
-  "1006": "main.c",
-  "1007": "main.cpp",
-  "1008": "script.py",
-  "1009": "main.nim",
-  "1010": "script.py",
-  "1012": "main.cpp",
-  "1013": "main.c",
-  "1014": "main.cpp",
-  "1015": "main.cpp",
-  "1021": "Main.cs",
-  "1022": "Main.cs",
-  "1023": "Test.cs",
-  "1024": "script.fsx",
-  "45": "main.asm"
-}
+  txt: {
+    id: "43"
+  },
+  out: {
+    id: "44"
+  },
+  asm: {
+    id: "45"
+  },
+  sh: {
+    id: "46"
+  },
+  bas: {
+    id: "47"
+  },
+  c: {
+    id: "1013"
+  },
+  cs: {
+    id: "1023"
+  },
+  cpp: {
+    id: "1015"
+  },
+  lisp: {
+    id: "55"
+  },
+  d: {
+    id: "56"
+  },
+  exs: {
+    id: "57"
+  },
+  erl: {
+    id: "58"
+  },
+  f90: {
+    id: "59"
+  },
+  go: {
+    id: "60"
+  },
+  hs: {
+    id: "61"
+  },
+  java: {
+    id: "1005"
+  },
+  js: {
+    id: "63"
+  },
+  lua: {
+    id: "64"
+  },
+  ml: {
+    id: "65"
+  },
+  m: {
+    id: "79"
+  },
+  pas: {
+    id: "67"
+  },
+  php: {
+    id: "68"
+  },
+  pro: {
+    id: "69"
+  },
+  py: {
+    id: "1010"
+  },
+  rb: {
+    id: "72"
+  },
+  rs: {
+    id: "73"
+  },
+  ts: {
+    id: "74"
+  },
+  cob: {
+    id: "77"
+  },
+  kt: {
+    id: "78"
+  },
+  r: {
+    id: "80"
+  },
+  scala: {
+    id: "81"
+  },
+  sql: {
+    id: "82"
+  },
+  swift: {
+    id: "83"
+  },
+  vb: {
+    id: "84"
+  },
+  pl: {
+    id: "85"
+  },
+  clj: {
+    id: "86"
+  },
+  fsx: {
+    id: "1024"
+  },
+  groovy: {
+    id: "88"
+  },
+  c3: {
+    id: "1003"
+  },
+  nim: {
+    id: "1009"
+  }
+};
